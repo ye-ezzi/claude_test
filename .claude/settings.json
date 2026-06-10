@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:fonts.google.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "mcp__plugin_figma_figma__use_figma",
+      "mcp__plugin_figma_figma__get_libraries",
+      "mcp__plugin_figma_figma__search_design_system",
+      "Bash(curl -s -o /tmp/sidebar_current.png \"https://www.figma.com/api/mcp/asset/48861ac7-df9b-451a-be5c-b50183d3a8db\")",
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)",
+      "Bash(curl -s -o /tmp/sidebar_footer.png \"https://www.figma.com/api/mcp/asset/f0b5e996-907d-4f66-bb71-0f690913effd\")",
+      "Bash(curl -s -o /tmp/sidebar_final.png \"https://www.figma.com/api/mcp/asset/d389902f-c4ee-429b-ae01-c8ab069f9bb3\")",
+      "Bash(npm install *)",
+      "Bash(curl -s -o /tmp/profile_set.png \"https://www.figma.com/api/mcp/asset/6a8f0415-f279-4a41-be8f-bd5cbf9a4854\")",
+      "Bash(GIT_ASKPASS=echo GIT_USERNAME=ghp_3xBLU4Rp2ZUEQCJY71D6PgaFpBPbOt0zEG3F git push https://ghp_3xBLU4Rp2ZUEQCJY71D6PgaFpBPbOt0zEG3F@github.com/ye-ezzi/claude_test.git main)"
+    ]
+  }
+}

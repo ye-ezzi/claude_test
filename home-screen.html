@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIN Teams — Home Screen</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *:focus { outline: none; }
+    *:focus-visible { outline: none; }
+
+    body {
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: #fff;
+      color: #323234;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .app { display: flex; height: 100vh; width: 100%; }
+
+    /* ── Outer Tab Rail ── */
+    .tab-rail {
+      width: 60px;
+      flex-shrink: 0;
+      background: #323234;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 10px;
+    }
+    .tab-rail-top { display: flex; flex-direction: column; gap: 30px; align-items: center; }
+    .logo-area {
+      width: 36px; height: 36px;
+      background: #6e19de; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .tab-list { display: flex; flex-direction: column; gap: 16px; align-items: center; }
+    .tab-item {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      cursor: pointer; width: 36px;
+    }
+    .tab-icon-wrap {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tab-icon-wrap.active { background: #44484c; }
+    .tab-icon-wrap { position: relative; }
+    .tab-badge {
+      position: absolute; top: -4px; right: -4px;
+      background: #c0a9f1; color: #323234;
+      font-size: 10px; font-weight: 600; line-height: 1;
+      min-width: 16px; height: 16px;
+      border-radius: 9999px; padding: 0 4px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid #323234;
+    }
+    .tab-label {
+      font-weight: 500; font-size: 12px; color: #fff;
+      text-align: center; line-height: 1; white-space: nowrap;
+    }
+    .user-avatar-rail {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #5a6470; display: flex; align-items: center; justify-content: center;
+      overflow: hidden; flex-shrink: 0;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 240px; flex-shrink: 0;
+      background: #eef2f7; height: 100%;
+      display: flex; flex-direction: column;
+      overflow-y: auto; overflow-x: hidden;
+    }
+    .sidebar::-webkit-scrollbar { display: none; }
+    .sidebar { scrollbar-width: none; }
+
+    .sidebar-header {
+      height: 56px; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 12px 0 16px; flex-shrink: 0;
+    }
+    .workspace-name {
+      display: flex; align-items: center; gap: 4px;
+      font-weight: 600; font-size: 15px; color: #323234; cursor: pointer;
+    }
+    .sidebar-search {
+      margin: 0 8px 8px;
+      background: #dae0e7; border-radius: 8px; height: 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 12px; cursor: pointer; flex-shrink: 0;
+    }
+    .sidebar-search-left {
+      display: flex; align-items: center; gap: 8px;
+      color: #8d97a5; font-size: 14px; font-weight: 500;
+    }
+    .sidebar-search-shortcut { font-size: 12px; color: #8d97a5; }
+    .sidebar-section { display: flex; flex-direction: column; padding: 0 8px; margin-bottom: 8px; }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 8px;
+      height: 40px; padding: 0 8px; border-radius: 8px;
+      cursor: pointer; font-size: 14px; color: #44484c; font-weight: 500;
+      transition: background 0.1s, color 0.1s; white-space: nowrap; overflow: hidden;
+    }
+    .sidebar-item:hover { background: #e3eaf2; color: #323234; }
+    .sidebar-item.active { background: #ebe2fd; color: #6e19de; font-weight: 600; }
+    .sidebar-section-label {
+      display: flex; align-items: center; gap: 4px;
+      height: 36px; padding: 0 4px;
+      font-size: 14px; color: #8d97a5; font-weight: 500; cursor: pointer;
+    }
+    .sidebar-item-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+    .badge {
+      background: #7f4fe8; color: #fff;
+      font-size: 11px; font-weight: 500;
+      border-radius: 9999px; padding: 1px 6px; line-height: 1.4; flex-shrink: 0;
+    }
+    .ch-icon {
+      width: 20px; height: 20px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .avatar-slot { position: relative; width: 26px; height: 26px; flex-shrink: 0; }
+    .bot-avatar {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 400;
+      position: absolute; top: 1px; left: 1px;
+    }
+    .bot-avatar.mint   { background: #c8f0f1; color: #159297; }
+    .bot-avatar.orange { background: #fbe2cd; color: #d37312; }
+    .bot-avatar.blue   { background: #cde4fb; color: #136693; }
+    .online-dot {
+      position: absolute; bottom: 0; right: 0;
+      width: 8px; height: 8px;
+      background: #2fd77b; border: 1.5px solid #eef2f7; border-radius: 50%;
+    }
+    .group-avatar {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: #8d97a5;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: #fff; font-weight: 400; flex-shrink: 0;
+    }
+    .agent-tabs { display: flex; align-items: center; height: 40px; padding: 0 4px; }
+    .agent-tab {
+      padding: 4px 10px; border-radius: 6px;
+      font-size: 13px; color: #8d97a5; font-weight: 400; cursor: pointer;
+    }
+    .agent-tab.active { background: #dae0e7; color: #44484c; font-weight: 600; }
+    .browse-channels {
+      display: flex; align-items: center; gap: 6px;
+      height: 40px; padding: 0 8px; color: #8d97a5; font-size: 14px; cursor: pointer;
+    }
+
+    /* ── Main Content ── */
+    .main-content {
+      flex: 1; min-width: 0; background: #fff;
+      display: flex; flex-direction: column; height: 100%; overflow: hidden;
+    }
+    .top-nav {
+      height: 56px; border-bottom: 1px solid #dae0e7;
+      display: flex; align-items: center;
+      padding: 0 20px; gap: 8px; flex-shrink: 0; background: #fff;
+    }
+    .top-nav-title {
+      flex: 1; min-width: 0; font-size: 18px; font-weight: 600; color: #323234;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .members-badge {
+      background: #eef2f7; color: #44484c;
+      font-size: 12px; font-weight: 500;
+      border-radius: 9999px; padding: 3px 8px; white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-icon-28 {
+      width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border-radius: 50%; background: transparent; border: none;
+      transition: background 0.1s;
+    }
+    .btn-icon-28:hover { background: #eef2f7; }
+
+    /* Message list */
+    .message-list { flex: 1; overflow-y: auto; overflow-x: hidden; }
+    .message-list::-webkit-scrollbar { width: 4px; }
+    .message-list::-webkit-scrollbar-thumb { background: #dae0e7; border-radius: 9999px; }
+    .msg-row { display: flex; gap: 12px; padding: 16px 20px; }
+    .msg-row:first-child { padding-top: 24px; }
+    .msg-row.highlighted { background: #f5f7fa; }
+    .msg-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 500;
+    }
+    .msg-avatar.mint  { background: #c8f0f1; color: #159297; }
+    .msg-avatar.pink  { background: #ffe0f6; color: #bd39e8; }
+    .msg-content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+    .msg-meta { display: flex; align-items: center; gap: 8px; }
+    .msg-author { font-size: 14px; font-weight: 600; color: #323234; }
+    .msg-time { font-size: 12px; color: #8d97a5; }
+    .msg-text { font-size: 14px; color: #323234; line-height: 1.5; }
+    .link-preview {
+      background: #f5f7fa; border-left: 3px solid #366dec;
+      border-radius: 4px; padding: 10px 12px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .link-domain { font-size: 12px; font-weight: 600; color: #323234; }
+    .link-title { font-size: 13px; color: #366dec; }
+    .reply-indicator { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .reply-avatar {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: #c8f0f1;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: #159297; flex-shrink: 0;
+    }
+    .reply-count { font-size: 13px; font-weight: 600; color: #366dec; }
+    .reply-time { font-size: 12px; color: #8d97a5; }
+    .image-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+    .food-img { width: 120px; height: 150px; border-radius: 8px; flex-shrink: 0; }
+
+    /* ── Input Area ── */
+    .input-area-wrapper { padding: 12px 20px 16px; flex-shrink: 0; background: #fff; }
+    .input-area {
+      background: #fff; border: 1px solid #dae0e7;
+      border-radius: 16px; box-shadow: 0px 1px 5px #e6eaef;
+      display: flex; flex-direction: column; gap: 0;
+      padding: 0;
+    }
+    .input-toolbar-top {
+      display: flex; align-items: center; gap: 2px;
+      padding: 8px 10px;
+      border-bottom: 1px solid #dae0e7;
+    }
+    .toolbar-icon-btn {
+      width: 32px; height: 32px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border: none; background: transparent;
+      transition: background 0.1s; flex-shrink: 0;
+    }
+    .toolbar-icon-btn svg { fill: #8d97a5; transition: fill 0.1s; }
+    .toolbar-icon-btn:hover { background: #eef2f7; }
+    .toolbar-icon-btn.active { background: #eef2f7; }
+    .toolbar-icon-btn.active svg { fill: #323234; }
+    .toolbar-divider { width: 1px; height: 18px; background: #dae0e7; margin: 0 4px; flex-shrink: 0; }
+    .input-text-area {
+      padding: 12px 16px;
+      font-size: 16px; color: #8d97a5;
+      font-family: inherit; line-height: 1.5;
+      outline: none; min-height: 44px;
+    }
+    .input-bottom-row {
+      display: flex; align-items: center; gap: 2px;
+      padding: 6px 8px;
+    }
+    .send-btn {
+      width: 40px; height: 40px; border-radius: 9999px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; background: #eef2f7; border: none;
+      margin-left: auto; flex-shrink: 0; transition: background 0.1s;
+    }
+    .send-btn:hover { background: #e6ecf4; }
+    .send-btn svg { fill: #44484c; }
+    .input-icon-btn {
+      width: 40px; height: 40px; border-radius: 9999px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; background: transparent; color: #44484c;
+      border: none; transition: background 0.1s; flex-shrink: 0;
+    }
+    .input-icon-btn:hover { background: #eef2f7; }
+    @media (min-width: 800px) {
+      .sidebar { width: 270px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ══ OUTER TAB RAIL ══ -->
+  <nav class="tab-rail" aria-label="앱 탭">
+    <div class="tab-rail-top">
+
+      <div class="logo-area">
+        <img src="icons/logo.svg" width="24" height="24" alt="AIN Teams 로고" />
+      </div>
+
+      <div class="tab-list">
+
+        <div class="tab-item" role="button" tabindex="0" aria-label="Home" aria-current="page" data-icon="icons/tab-home.svg" data-icon-fill="icons/tab-home-fill.svg">
+          <div class="tab-icon-wrap active">
+            <img src="icons/tab-home-fill.svg" width="20" height="20" alt="" />
+          </div>
+          <span class="tab-label">Home</span>
+        </div>
+
+        <div class="tab-item" role="button" tabindex="0" aria-label="Direct Messages" data-icon="icons/tab-dm.svg" data-icon-fill="icons/tab-dm-fill.svg">
+          <div class="tab-icon-wrap">
+            <img src="icons/tab-dm.svg" width="20" height="20" alt="" />
+            <span class="tab-badge">11</span>
+          </div>
+          <span class="tab-label">DM</span>
+        </div>
+
+        <div class="tab-item" role="button" tabindex="0" aria-label="Activity" data-icon="icons/tab-activity.svg" data-icon-fill="icons/tab-activity-fill.svg">
+          <div class="tab-icon-wrap">
+            <img src="icons/tab-activity.svg" width="20" height="20" alt="" />
+            <span class="tab-badge">2</span>
+          </div>
+          <span class="tab-label">Activity</span>
+        </div>
+
+        <div class="tab-item" role="button" tabindex="0" aria-label="Tools" data-icon="icons/tab-tools.svg" data-icon-fill="icons/tab-tools-fill.svg">
+          <div class="tab-icon-wrap">
+            <img src="icons/tab-tools.svg" width="20" height="20" alt="" />
+          </div>
+          <span class="tab-label">Tools</span>
+        </div>
+
+        <div class="tab-item" role="button" tabindex="0" aria-label="Workflow" data-icon="icons/tab-workflow.svg" data-icon-fill="icons/tab-workflow-fill.svg">
+          <div class="tab-icon-wrap">
+            <img src="icons/tab-workflow.svg" width="20" height="20" alt="" />
+          </div>
+          <span class="tab-label">Workflow</span>
+        </div>
+
+        <div class="tab-item" role="button" tabindex="0" aria-label="Later" data-icon="icons/tab-later.svg" data-icon-fill="icons/tab-later-fill.svg">
+          <div class="tab-icon-wrap">
+            <img src="icons/tab-later.svg" width="20" height="20" alt="" />
+          </div>
+          <span class="tab-label">Later</span>
+        </div>
+
+        <div class="tab-item" role="button" tabindex="0" aria-label="Files" data-icon="icons/tab-files.svg" data-icon-fill="icons/tab-files-fill.svg">
+          <div class="tab-icon-wrap">
+            <img src="icons/tab-files.svg" width="20" height="20" alt="" />
+          </div>
+          <span class="tab-label">Files</span>
+        </div>
+
+        <div class="tab-item" role="button" tabindex="0" aria-label="Docs" data-icon="icons/tab-docs.svg" data-icon-fill="icons/tab-docs-fill.svg">
+          <div class="tab-icon-wrap">
+            <img src="icons/tab-docs.svg" width="20" height="20" alt="" />
+          </div>
+          <span class="tab-label">Docs</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="user-avatar-rail" aria-label="내 프로필" style="background:#a8b4c8;">
+      <svg width="24" height="24" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- head -->
+        <circle cx="18" cy="13" r="7" fill="#fff" opacity="0.95"/>
+        <!-- body -->
+        <path d="M6 32c0-7 5.373-11 12-11s12 4 12 11" fill="#fff" opacity="0.95"/>
+        <!-- eyes -->
+        <circle cx="15" cy="12.5" r="1" fill="#a8b4c8"/>
+        <circle cx="21" cy="12.5" r="1" fill="#a8b4c8"/>
+        <!-- nose -->
+        <path d="M18 14.5 L17 16.5 L19 16.5" stroke="#a8b4c8" stroke-width="0.8" stroke-linejoin="round" fill="none"/>
+        <!-- mouth -->
+        <path d="M15.5 18.5 Q18 20.5 20.5 18.5" stroke="#a8b4c8" stroke-width="1" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+  </nav>
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar" aria-label="사이드바 내비게이션">
+
+    <div class="sidebar-header">
+      <div class="workspace-name">
+        comcom
+        <img src="icons/expand-more.svg" width="16" height="16" alt="" />
+      </div>
+      <button style="background:none;border:none;cursor:pointer;display:flex;align-items:center;" aria-label="새 메시지 작성">
+        <img src="icons/edit.svg" width="24" height="24" alt="" />
+      </button>
+    </div>
+
+    <div class="sidebar-search" role="search" aria-label="검색">
+      <div class="sidebar-search-left">
+        <img src="icons/search.svg" width="12" height="12" alt="" />
+        Search comcom
+      </div>
+      <span class="sidebar-search-shortcut">⌘K</span>
+    </div>
+
+    <!-- Threads -->
+    <div class="sidebar-section">
+      <div class="sidebar-item" role="button" tabindex="0" aria-label="Threads">
+        <div class="ch-icon"><img src="icons/threads.svg" width="24" height="24" alt="" /></div>
+        <span class="sidebar-item-name">Threads</span>
+      </div>
+    </div>
+
+    <!-- Channels -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-label" role="button" tabindex="0" aria-expanded="true">
+        Channels
+        <img src="icons/expand-more.svg" width="16" height="16" alt="" />
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0">
+        <div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div>
+        <span class="sidebar-item-name">eat</span>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0">
+        <div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div>
+        <span class="sidebar-item-name">general</span>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0">
+        <div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div>
+        <span class="sidebar-item-name">government</span>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0">
+        <div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div>
+        <span class="sidebar-item-name">kakaopaysecurities</span>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0" style="font-weight:600;color:#323234;">
+        <div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div>
+        <span class="sidebar-item-name">random</span>
+        <span class="badge">1</span>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0" style="font-weight:600;color:#323234;">
+        <div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div>
+        <span class="sidebar-item-name">schedule</span>
+        <span class="badge">2</span>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0">
+        <div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div>
+        <span class="sidebar-item-name">timeline</span>
+      </div>
+      <div class="browse-channels" role="button" tabindex="0" aria-label="채널 둘러보기">
+        <img src="icons/add_channel.svg" width="20" height="20" alt="" style="flex-shrink:0;" />
+        Browse channels
+      </div>
+    </div>
+
+    <!-- Direct Messages -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-label" role="button" tabindex="0" aria-expanded="true">
+        Direct Messages
+        <img src="icons/expand-more.svg" width="16" height="16" alt="" />
+      </div>
+      <div class="sidebar-item active" role="button" tabindex="0" aria-current="true" aria-label="Haechan Lee, Jiyoun...">
+        <div class="group-avatar" aria-hidden="true">8</div>
+        <span class="sidebar-item-name">Haechan Lee, Jiyoun...</span>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0" aria-label="Builder">
+        <div class="avatar-slot" aria-hidden="true">
+          <div class="bot-avatar orange">A</div>
+          <div class="online-dot"></div>
+        </div>
+        <span class="sidebar-item-name">Builder</span>
+      </div>
+    </div>
+
+    <!-- Agents -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-label" role="button" tabindex="0" aria-expanded="true">
+        Agents
+        <img src="icons/expand-more.svg" width="16" height="16" alt="" />
+      </div>
+      <div class="agent-tabs" role="tablist" aria-label="에이전트 탭">
+        <div class="agent-tab active" role="tab" tabindex="0" aria-selected="true">Workspace</div>
+        <div class="agent-tab" role="tab" tabindex="0" aria-selected="false">Mine</div>
+        <div class="agent-tab" role="tab" tabindex="0" aria-selected="false">Browse</div>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0" aria-label="Builder" style="height:36px;">
+        <div class="avatar-slot" aria-hidden="true">
+          <div class="bot-avatar orange">A</div>
+          <div class="online-dot"></div>
+        </div>
+        <span class="sidebar-item-name" style="flex:1;">Builder</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;">
+          <path d="M4.16698 17.5C3.45865 17.5 2.95518 17.184 2.65657 16.5521C2.35796 15.9201 2.43087 15.3333 2.87532 14.7917L7.50032 9.16667V4.16667H6.66698C6.43087 4.16667 6.23296 4.08681 6.07323 3.92708C5.91351 3.76736 5.83365 3.56944 5.83365 3.33333C5.83365 3.09722 5.91351 2.89931 6.07323 2.73958C6.23296 2.57986 6.43087 2.5 6.66698 2.5H13.3337C13.5698 2.5 13.7677 2.57986 13.9274 2.73958C14.0871 2.89931 14.167 3.09722 14.167 3.33333C14.167 3.56944 14.0871 3.76736 13.9274 3.92708C13.7677 4.08681 13.5698 4.16667 13.3337 4.16667H12.5003V9.16667L17.1253 14.7917C17.5698 15.3333 17.6427 15.9201 17.3441 16.5521C17.0455 17.184 16.542 17.5 15.8337 17.5H4.16698ZM4.16698 15.8333H15.8337L10.8337 9.75V4.16667H9.16698V9.75L4.16698 15.8333Z" fill="#8D97A5"/>
+        </svg>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0" aria-label="EchoBot" style="height:36px;">
+        <div class="avatar-slot" aria-hidden="true">
+          <div class="bot-avatar mint">A</div>
+          <div class="online-dot"></div>
+        </div>
+        <span class="sidebar-item-name" style="flex:1;">EchoBot</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;">
+          <path d="M4.16698 17.5C3.45865 17.5 2.95518 17.184 2.65657 16.5521C2.35796 15.9201 2.43087 15.3333 2.87532 14.7917L7.50032 9.16667V4.16667H6.66698C6.43087 4.16667 6.23296 4.08681 6.07323 3.92708C5.91351 3.76736 5.83365 3.56944 5.83365 3.33333C5.83365 3.09722 5.91351 2.89931 6.07323 2.73958C6.23296 2.57986 6.43087 2.5 6.66698 2.5H13.3337C13.5698 2.5 13.7677 2.57986 13.9274 2.73958C14.0871 2.89931 14.167 3.09722 14.167 3.33333C14.167 3.56944 14.0871 3.76736 13.9274 3.92708C13.7677 4.08681 13.5698 4.16667 13.3337 4.16667H12.5003V9.16667L17.1253 14.7917C17.5698 15.3333 17.6427 15.9201 17.3441 16.5521C17.0455 17.184 16.542 17.5 15.8337 17.5H4.16698ZM4.16698 15.8333H15.8337L10.8337 9.75V4.16667H9.16698V9.75L4.16698 15.8333Z" fill="#8D97A5"/>
+        </svg>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0" aria-label="EuropeanEnterpriseAI" style="height:36px;">
+        <div class="avatar-slot" aria-hidden="true">
+          <div class="bot-avatar blue">A</div>
+          <div class="online-dot" style="background:#bdc6d1;"></div>
+        </div>
+        <span class="sidebar-item-name">EuropeanEnterpriseAI...</span>
+      </div>
+    </div>
+
+    <!-- Docs -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-label" role="button" tabindex="0" aria-expanded="true">
+        Docs
+        <img src="icons/expand-more.svg" width="16" height="16" alt="" />
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0" style="height:36px;">
+        <div class="ch-icon"><img src="icons/doc.svg" width="20" height="20" alt="" /></div>
+        <span class="sidebar-item-name">EuropeanEnterpriseAI...</span>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0" style="height:36px;">
+        <div class="ch-icon"><img src="icons/doc.svg" width="20" height="20" alt="" /></div>
+        <span class="sidebar-item-name">EuropeanEnterpriseAI...</span>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ══ MAIN CONTENT ══ -->
+  <main class="main-content" aria-label="메인 채팅 영역">
+
+    <!-- Top Nav -->
+    <header class="top-nav">
+      <h1 class="top-nav-title">
+        Haechan Lee, Jiyoung An, Finn, Jiyoung Yang, Yoojin Ko, chanho, Hyeonjeong Jun
+      </h1>
+      <div class="members-badge" aria-label="멤버 8명">8 members</div>
+      <button class="btn-icon-28" aria-label="더 보기">
+        <img src="icons/more-vert.svg" width="24" height="24" alt="" />
+      </button>
+    </header>
+
+    <!-- Message List -->
+    <div class="message-list" role="log" aria-live="polite" aria-label="메시지 목록">
+
+      <!-- Message 1 -->
+      <div class="msg-row">
+        <div class="msg-avatar mint" aria-hidden="true">A</div>
+        <div class="msg-content">
+          <div class="msg-meta">
+            <span class="msg-author">Hyeonjeong Jun</span>
+            <span class="msg-time">12:42 PM</span>
+          </div>
+          <p class="msg-text">청년다방 크림 차돌 떡볶이</p>
+          <div class="link-preview">
+            <span class="link-domain">instagram.com</span>
+            <span class="link-title">Instagram</span>
+          </div>
+          <div class="reply-indicator" role="button" tabindex="0" aria-label="2개의 댓글 보기">
+            <div class="reply-avatar" aria-hidden="true">A</div>
+            <span class="reply-count">2개의 댓글</span>
+            <span class="reply-time">5월 16일 1:24 PM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message 2 (highlighted + images) -->
+      <div class="msg-row highlighted">
+        <div class="msg-avatar mint" aria-hidden="true">A</div>
+        <div class="msg-content">
+          <div class="msg-meta">
+            <span class="msg-author">Hyeonjeong Jun</span>
+            <span class="msg-time">1:32 PM</span>
+          </div>
+          <p class="msg-text">야근하면서 차돌크림떡볶이 마스터에 관심 있으신 분? 특히 치즈밥리조또😋 (오늘은 아님...)</p>
+          <div class="image-grid" role="img" aria-label="음식 사진 5장">
+            <div class="food-img" style="background:#6b5e45;" aria-hidden="true"></div>
+            <div class="food-img" style="background:#4a6b3a;" aria-hidden="true"></div>
+            <div class="food-img" style="background:#8b2323;" aria-hidden="true"></div>
+            <div class="food-img" style="background:#f5d96e;" aria-hidden="true"></div>
+            <div class="food-img" style="background:#e8e0d0;" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message 3 (Finn bot) -->
+      <div class="msg-row">
+        <div class="msg-avatar pink" aria-hidden="true">A</div>
+        <div class="msg-content">
+          <div class="msg-meta">
+            <span class="msg-author">Finn</span>
+            <span class="msg-time">3:03 PM</span>
+          </div>
+          <p class="msg-text">진짜 폭력적인 비주얼이네요...</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area-wrapper">
+      <div class="input-area" role="form" aria-label="메시지 입력">
+
+        <!-- Formatting toolbar -->
+        <div class="input-toolbar-top" role="toolbar" aria-label="서식 도구모음">
+          <button class="toolbar-icon-btn" title="굵게 (⌘B)" aria-label="굵게">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg>
+          </button>
+          <button class="toolbar-icon-btn" title="기울임꼴 (⌘I)" aria-label="기울임꼴">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z"/></svg>
+          </button>
+          <button class="toolbar-icon-btn" title="취소선" aria-label="취소선">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M10 19h4v-3h-4v3zM5 4v3h5v3h4V7h5V4H5zM3 14h18v-2H3v2z"/></svg>
+          </button>
+          <button class="toolbar-icon-btn" title="밑줄 (⌘U)" aria-label="밑줄">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/></svg>
+          </button>
+          <div class="toolbar-divider"></div>
+          <button class="toolbar-icon-btn" title="링크" aria-label="링크">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+          </button>
+          <button class="toolbar-icon-btn" title="글머리 기호" aria-label="글머리 기호">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z"/></svg>
+          </button>
+          <button class="toolbar-icon-btn" title="번호 매기기" aria-label="번호 매기기">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 17h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2v1zm5-6v2h14V5H7zm0 14h14v-2H7v2zm0-6h14v-2H7v2z"/></svg>
+          </button>
+          <div class="toolbar-divider"></div>
+          <button class="toolbar-icon-btn" title="코드" aria-label="코드">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+          </button>
+          <button class="toolbar-icon-btn" title="이미지" aria-label="이미지">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+          </button>
+          <button class="toolbar-icon-btn" title="인용" aria-label="인용">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+          </button>
+        </div>
+
+        <!-- Placeholder text -->
+        <div class="input-text-area" role="textbox" contenteditable="true" aria-label="메시지 입력 영역" aria-placeholder="Ask anything..">
+          <span style="color:#8d97a5;pointer-events:none;">Ask anything..</span>
+        </div>
+
+        <!-- Bottom action row -->
+        <div class="input-bottom-row" role="toolbar" aria-label="첨부 도구모음">
+          <button class="input-icon-btn" title="파일 첨부" aria-label="파일 첨부">
+            <img src="icons/attach.svg" width="20" height="20" alt="" />
+          </button>
+          <button class="input-icon-btn" title="이모지" aria-label="이모지">
+            <img src="icons/emoji.svg" width="20" height="20" alt="" />
+          </button>
+          <button class="input-icon-btn" title="멘션" aria-label="멘션">
+            <img src="icons/mention.svg" width="20" height="20" alt="" />
+          </button>
+          <button class="send-btn" title="메시지 보내기" aria-label="메시지 보내기">
+            <svg width="20" height="20" viewBox="0 -960 960 960" fill="none"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80z"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+</div>
+<script>
+  // Tab rail 클릭 — active 상태 + fill 아이콘 교체
+  document.querySelectorAll('.tab-item').forEach(tab => {
+    tab.addEventListener('click', () => {
+      // 모든 탭 비활성화
+      document.querySelectorAll('.tab-item').forEach(t => {
+        t.querySelector('.tab-icon-wrap').classList.remove('active');
+        t.removeAttribute('aria-current');
+        const img = t.querySelector('img');
+        const outlineIcon = t.dataset.icon;
+        if (outlineIcon) img.src = outlineIcon;
+      });
+      // 클릭된 탭 활성화
+      tab.querySelector('.tab-icon-wrap').classList.add('active');
+      tab.setAttribute('aria-current', 'page');
+      const img = tab.querySelector('img');
+      const fillIcon = tab.dataset.iconFill;
+      if (fillIcon) img.src = fillIcon;
+    });
+    tab.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') tab.click(); });
+  });
+
+  // Sidebar 아이템 클릭 (채널, DM, 에이전트, Docs 행)
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.sidebar-item').forEach(i => {
+        i.classList.remove('active');
+        i.removeAttribute('aria-current');
+      });
+      item.classList.add('active');
+      item.setAttribute('aria-current', 'true');
+    });
+    item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') item.click(); });
+  });
+
+  // Sidebar 섹션 라벨 토글 (Channels, DMs 등 접기/펼치기)
+  document.querySelectorAll('.sidebar-section-label').forEach(label => {
+    label.style.cursor = 'pointer';
+    label.addEventListener('click', () => {
+      const section = label.closest('.sidebar-section');
+      const items = section.querySelectorAll('.sidebar-item, .sidebar-item-channels');
+      const chevron = label.querySelector('img');
+      const collapsed = label.dataset.collapsed === 'true';
+      items.forEach(el => { el.style.display = collapsed ? '' : 'none'; });
+      if (chevron) chevron.style.transform = collapsed ? '' : 'rotate(-90deg)';
+      label.dataset.collapsed = collapsed ? 'false' : 'true';
+    });
+  });
+
+  // Formatting toolbar 버튼 토글 (Bold, Italic, Strikethrough, Underline)
+  document.querySelectorAll('.toolbar-icon-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+    });
+  });
+
+  // Search bar 클릭 — 포커스 효과
+  const searchBar = document.querySelector('.sidebar-search');
+  if (searchBar) {
+    searchBar.addEventListener('click', () => {
+      searchBar.style.outline = '2px solid #6e19de';
+      searchBar.style.outlineOffset = '-2px';
+      setTimeout(() => { searchBar.style.outline = ''; }, 1200);
+    });
+  }
+
+  // Agent tabs 클릭
+  document.querySelectorAll('.agent-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.agent-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+    });
+  });
+</script>
+</body>
+</html>
