@@ -1,0 +1,7 @@
+{
+  "name": "AIN Teams - 화면 생성",
+  "id": "ain-teams-screen-generator-v1",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"]
+}

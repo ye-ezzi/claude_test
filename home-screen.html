@@ -51,7 +51,7 @@
     .tab-icon-wrap { position: relative; }
     .tab-badge {
       position: absolute; top: -4px; right: -4px;
-      background: #c0a9f1; color: #323234;
+      background: #e85555; color: #fff;
       font-size: 10px; font-weight: 600; line-height: 1;
       min-width: 16px; height: 16px;
       border-radius: 9999px; padding: 0 4px;
@@ -70,7 +70,7 @@
 
     /* ── Sidebar ── */
     .sidebar {
-      width: 240px; flex-shrink: 0;
+      width: 270px; flex-shrink: 0;
       background: #eef2f7; height: 100%;
       display: flex; flex-direction: column;
       overflow-y: auto; overflow-x: hidden;
@@ -82,6 +82,12 @@
       height: 56px; display: flex; align-items: center;
       justify-content: space-between; padding: 0 12px 0 16px; flex-shrink: 0;
     }
+    .sidebar-header-btn {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: none; cursor: pointer; transition: background 0.1s;
+    }
+    .sidebar-header-btn:hover { background: #dae0e7; }
     .workspace-name {
       display: flex; align-items: center; gap: 4px;
       font-weight: 600; font-size: 15px; color: #323234; cursor: pointer;
@@ -113,7 +119,7 @@
     }
     .sidebar-item-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
     .badge {
-      background: #7f4fe8; color: #fff;
+      background: #e85555; color: #fff;
       font-size: 11px; font-weight: 500;
       border-radius: 9999px; padding: 1px 6px; line-height: 1.4; flex-shrink: 0;
     }
@@ -269,6 +275,216 @@
     @media (min-width: 800px) {
       .sidebar { width: 270px; }
     }
+
+
+    /* ── Search Modal ── */
+    .search-backdrop {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(50,50,51,0.4);
+      display: none; align-items: center; justify-content: center;
+    }
+    .search-backdrop.visible { display: flex; }
+    .search-modal {
+      width: 677px; background: #fff;
+      border: 1px solid #bdc6d1; border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    .search-input-row {
+      display: flex; align-items: center;
+      height: 52px; padding: 0 14px;
+      border-bottom: 1px solid #bdc6d1; gap: 8px;
+    }
+    .search-input-left {
+      flex: 1; min-width: 0;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .search-tag {
+      display: inline-flex; align-items: center;
+      background: #daf1ff; border-radius: 10px;
+      padding: 0 8px; height: 20px; flex-shrink: 0;
+      font-size: 14px; font-weight: 600; color: #126693;
+      white-space: nowrap;
+    }
+    .search-placeholder {
+      font-size: 16px; font-weight: 400; color: #8d97a5;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .search-input-right {
+      display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+    }
+    .search-action-btn {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: transparent; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.1s;
+    }
+    .search-action-btn:hover { background: #eef2f7; }
+    .search-result-row {
+      display: flex; align-items: center; gap: 8px;
+      height: 40px; padding: 0 14px; cursor: pointer;
+      transition: background 0.1s;
+    }
+    .search-result-row:hover { background: #f5f7fa; }
+    .search-result-icon {
+      width: 20px; height: 20px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .search-result-text {
+      font-size: 14px; font-weight: 400; color: #44484c;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;
+    }
+    .search-result-channel {
+      font-size: 12px; font-weight: 400; color: #44484c; flex-shrink: 0;
+    }
+
+    /* ── DM Screen Overlay ── */
+    .dm-screen {
+      position: fixed; inset: 0; z-index: 100;
+      display: none; /* shown via JS */
+      background: #fff;
+    }
+    .dm-screen.visible { display: flex; }
+    .dm-app { display: flex; height: 100%; width: 100%; }
+
+    /* DM sidebar */
+    .dm-sidebar {
+      width: 270px; flex-shrink: 0;
+      background: #eef2f7; height: 100%;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .dm-sidebar-header {
+      height: 56px; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 12px 0 16px; flex-shrink: 0;
+    }
+    .dm-sidebar-title {
+      font-weight: 600; font-size: 15px; color: #323234;
+    }
+    .dm-header-actions { display: flex; gap: 4px; align-items: center; }
+    .dm-header-btn {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: none; cursor: pointer;
+      transition: background 0.1s;
+    }
+    .dm-header-btn:hover { background: #dae0e7; }
+
+    /* Pinned agents row */
+    .dm-pinned {
+      display: flex; gap: 2px; align-items: center;
+      padding: 0 8px 16px; border-bottom: 1px solid #dae0e7;
+      flex-shrink: 0;
+    }
+    .dm-pin-item {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      padding: 2px; width: 48px; cursor: pointer;
+    }
+    .dm-pin-avatar-wrap { position: relative; width: 36px; height: 36px; }
+    .dm-pin-avatar {
+      position: absolute; top: 1.38px; left: 1.38px;
+      width: 33.23px; height: 33.23px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 400; overflow: hidden;
+    }
+    .dm-pin-avatar.teal   { background: #c8f0f1; color: #136693; }
+    .dm-pin-avatar.green  { background: #c8f0e0; color: #139346; }
+    .dm-pin-avatar.orange { background: #fbe2cd; color: #d37312; }
+    .dm-pin-dot {
+      position: absolute; bottom: 0; right: 0;
+      width: 11px; height: 11px;
+      background: #2fd77b; border: 1.5px solid #eef2f7; border-radius: 50%;
+    }
+    .dm-pin-label {
+      font-size: 10px; color: #44484c; text-align: center;
+      width: 38px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    /* Filter tabs */
+    .dm-filter-tabs {
+      display: flex; gap: 5px; align-items: center;
+      padding: 12px 8px 8px; flex-shrink: 0;
+    }
+    .dm-filter-tab {
+      padding: 5px 10px; border-radius: 6px;
+      font-size: 13px; color: #8d97a5; font-weight: 400; cursor: pointer;
+      background: transparent;
+    }
+    .dm-filter-tab.active { background: #dae0e7; color: #44484c; font-weight: 600; }
+
+    /* Conversation list */
+    .dm-conv-list { flex: 1; overflow-y: auto; overflow-x: hidden; }
+    .dm-conv-list::-webkit-scrollbar { display: none; }
+    .dm-conv-item {
+      display: flex; gap: 12px; align-items: center;
+      padding: 12px; border-bottom: 1px solid #dae0e7;
+      cursor: pointer; height: 54px; transition: background 0.1s;
+    }
+    .dm-conv-item:hover { background: #e3eaf2; }
+    .dm-conv-item.active { background: #e3eaf2; }
+    .dm-conv-avatar-wrap { position: relative; width: 36px; height: 36px; flex-shrink: 0; }
+    .dm-conv-avatar {
+      position: absolute; top: 1.38px; left: 1.38px;
+      width: 33.23px; height: 33.23px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 400; overflow: hidden;
+    }
+    .dm-conv-avatar.teal   { background: #c8f0f1; color: #136693; }
+    .dm-conv-avatar.user   { background: #a8b4c8; }
+    .dm-conv-dot {
+      position: absolute; bottom: 0; right: 0;
+      width: 11px; height: 11px;
+      background: #2fd77b; border: 1.5px solid #eef2f7; border-radius: 50%;
+    }
+    .dm-conv-avatar.user .dm-user-icon { width: 100%; height: 100%; }
+    .dm-conv-text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+    .dm-conv-top { display: flex; justify-content: space-between; align-items: flex-start; white-space: nowrap; }
+    .dm-conv-name { font-size: 14px; font-weight: 500; color: #3c3f43; }
+    .dm-conv-time { font-size: 10px; color: #7e868d; line-height: 1.2; }
+    .dm-conv-preview {
+      font-size: 12px; color: #44484c; line-height: 1.2;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .dm-conv-preview.link { color: #366dec; font-weight: 500; }
+
+    /* DM main content */
+    .dm-main {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column; height: 100%;
+      background: #fff; overflow: hidden;
+    }
+    .dm-top-nav {
+      height: 56px; border-bottom: 1px solid #dae0e7;
+      display: flex; align-items: center;
+      padding: 0 20px; gap: 8px; flex-shrink: 0; background: #fff;
+    }
+    .dm-back-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: none; cursor: pointer;
+      transition: background 0.1s; flex-shrink: 0;
+    }
+    .dm-back-btn:hover { background: #eef2f7; }
+    .dm-top-title {
+      flex: 1; min-width: 0; font-size: 18px; font-weight: 600; color: #323234;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .dm-members-badge {
+      background: #eef2f7; color: #44484c;
+      font-size: 12px; font-weight: 500;
+      border-radius: 9999px; padding: 3px 8px; white-space: nowrap; flex-shrink: 0;
+    }
+    .dm-more-btn {
+      width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border-radius: 50%; background: transparent; border: none;
+      transition: background 0.1s;
+    }
+    .dm-more-btn:hover { background: #eef2f7; }
+
+    /* DM message list */
+    .dm-message-list { flex: 1; overflow-y: auto; overflow-x: hidden; }
+    .dm-message-list::-webkit-scrollbar { width: 4px; }
+    .dm-message-list::-webkit-scrollbar-thumb { background: #dae0e7; border-radius: 9999px; }
   </style>
 </head>
 <body>
@@ -370,24 +586,23 @@
         comcom
         <img src="icons/expand-more.svg" width="16" height="16" alt="" />
       </div>
-      <button style="background:none;border:none;cursor:pointer;display:flex;align-items:center;" aria-label="새 메시지 작성">
-        <img src="icons/edit.svg" width="24" height="24" alt="" />
-      </button>
-    </div>
-
-    <div class="sidebar-search" role="search" aria-label="검색">
-      <div class="sidebar-search-left">
-        <img src="icons/search.svg" width="12" height="12" alt="" />
-        Search comcom
+      <div style="display:flex;gap:4px;align-items:center;">
+        <button class="sidebar-header-btn" id="sidebarSearchBtn" aria-label="검색">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#44484c"/>
+          </svg>
+        </button>
+        <button class="sidebar-header-btn" aria-label="새 메시지 작성">
+          <img src="icons/edit.svg" width="18" height="18" alt="" />
+        </button>
       </div>
-      <span class="sidebar-search-shortcut">⌘K</span>
     </div>
 
     <!-- Threads -->
     <div class="sidebar-section">
       <div class="sidebar-item" role="button" tabindex="0" aria-label="Threads">
         <div class="ch-icon"><img src="icons/threads.svg" width="24" height="24" alt="" /></div>
-        <span class="sidebar-item-name">Threads</span>
+        <span class="sidebar-item-name" style="font-weight:400;">Threads</span>
       </div>
     </div>
 
@@ -434,7 +649,7 @@
     </div>
 
     <!-- Direct Messages -->
-    <div class="sidebar-section">
+    <div class="sidebar-section" data-section="dm">
       <div class="sidebar-section-label" role="button" tabindex="0" aria-expanded="true">
         Direct Messages
         <img src="icons/expand-more.svg" width="16" height="16" alt="" />
@@ -442,6 +657,20 @@
       <div class="sidebar-item active" role="button" tabindex="0" aria-current="true" aria-label="Haechan Lee, Jiyoun...">
         <div class="group-avatar" aria-hidden="true">8</div>
         <span class="sidebar-item-name">Haechan Lee, Jiyoun...</span>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0" aria-label="EchoBot">
+        <div class="avatar-slot" aria-hidden="true">
+          <div class="bot-avatar mint">A</div>
+          <div class="online-dot"></div>
+        </div>
+        <span class="sidebar-item-name">EchoBot</span>
+      </div>
+      <div class="sidebar-item" role="button" tabindex="0" aria-label="TimelineOrganizer">
+        <div class="avatar-slot" aria-hidden="true">
+          <div class="bot-avatar blue">A</div>
+          <div class="online-dot"></div>
+        </div>
+        <span class="sidebar-item-name">TimelineOrganizer</span>
       </div>
       <div class="sidebar-item" role="button" tabindex="0" aria-label="Builder">
         <div class="avatar-slot" aria-hidden="true">
@@ -648,26 +877,1221 @@
   </main>
 
 </div>
+
+<!-- ══ FILES SCREEN OVERLAY ══ -->
+<div class="dm-screen" id="filesScreen" role="main" aria-label="Files 화면">
+  <div class="dm-app">
+
+    <!-- Files Tab Rail (Files tab active) -->
+    <nav class="tab-rail" aria-label="앱 탭">
+      <div class="tab-rail-top">
+        <div class="logo-area">
+          <img src="icons/logo.svg" width="24" height="24" alt="AIN Teams 로고" />
+        </div>
+        <div class="tab-list">
+          <div class="tab-item" role="button" tabindex="0" aria-label="Home" data-icon="icons/tab-home.svg" data-icon-fill="icons/tab-home-fill.svg" data-screen="home">
+            <div class="tab-icon-wrap"><img src="icons/tab-home.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Home</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Direct Messages" data-icon="icons/tab-dm.svg" data-icon-fill="icons/tab-dm-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-dm.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">DM</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Activity" data-icon="icons/tab-activity.svg" data-icon-fill="icons/tab-activity-fill.svg">
+            <div class="tab-icon-wrap">
+              <img src="icons/tab-activity.svg" width="20" height="20" alt="" />
+              <span class="tab-badge">2</span>
+            </div>
+            <span class="tab-label">Activity</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Tools" data-icon="icons/tab-tools.svg" data-icon-fill="icons/tab-tools-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-tools.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Tools</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Workflow" data-icon="icons/tab-workflow.svg" data-icon-fill="icons/tab-workflow-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-workflow.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Workflow</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Later" data-icon="icons/tab-later.svg" data-icon-fill="icons/tab-later-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-later.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Later</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Files" aria-current="page" data-icon="icons/tab-files.svg" data-icon-fill="icons/tab-files-fill.svg">
+            <div class="tab-icon-wrap active"><img src="icons/tab-files-fill.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Files</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Docs" data-icon="icons/tab-docs.svg" data-icon-fill="icons/tab-docs-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-docs.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Docs</span>
+          </div>
+        </div>
+      </div>
+      <div class="user-avatar-rail" aria-label="내 프로필" style="background:#a8b4c8;">
+        <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="13" r="7" fill="#fff" opacity="0.95"/>
+          <path d="M6 32c0-7 5.373-11 12-11s12 4 12 11" fill="#fff" opacity="0.95"/>
+        </svg>
+      </div>
+    </nav>
+
+    <!-- Sidebar (홈과 동일) -->
+    <aside class="sidebar" aria-label="사이드바 내비게이션">
+      <div class="sidebar-header">
+        <div class="workspace-name">comcom<img src="icons/expand-more.svg" width="16" height="16" alt="" /></div>
+        <div style="display:flex;gap:4px;align-items:center;">
+          <button class="sidebar-header-btn" aria-label="검색" onclick="openSearch()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#44484c"/></svg>
+          </button>
+          <button class="sidebar-header-btn" aria-label="새 메시지 작성">
+            <img src="icons/edit.svg" width="18" height="18" alt="" />
+          </button>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/threads.svg" width="24" height="24" alt="" /></div><span class="sidebar-item-name" style="font-weight:400;">Threads</span></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label" role="button" tabindex="0">Channels<img src="icons/expand-more.svg" width="16" height="16" alt="" /></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">eat</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">general</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">government</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">kakaopaysecurities</span></div>
+        <div class="sidebar-item" role="button" tabindex="0" style="font-weight:600;color:#323234;"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">random</span><span class="badge">1</span></div>
+        <div class="sidebar-item" role="button" tabindex="0" style="font-weight:600;color:#323234;"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">schedule</span><span class="badge">2</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">timeline</span></div>
+        <div class="browse-channels" role="button" tabindex="0"><img src="icons/add_channel.svg" width="20" height="20" alt="" style="flex-shrink:0;" />Browse channels</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label" role="button" tabindex="0">Direct Messages<img src="icons/expand-more.svg" width="16" height="16" alt="" /></div>
+        <div class="sidebar-item active" role="button" tabindex="0"><div class="group-avatar">8</div><span class="sidebar-item-name">Haechan Lee, Jiyoun...</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="avatar-slot"><div class="bot-avatar mint">A</div><div class="online-dot"></div></div><span class="sidebar-item-name">EchoBot</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="avatar-slot"><div class="bot-avatar blue">A</div><div class="online-dot"></div></div><span class="sidebar-item-name">TimelineOrganizer</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="avatar-slot"><div class="bot-avatar orange">A</div><div class="online-dot"></div></div><span class="sidebar-item-name">Builder</span></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label" role="button" tabindex="0">Agents<img src="icons/expand-more.svg" width="16" height="16" alt="" /></div>
+        <div class="agent-tabs" role="tablist">
+          <div class="agent-tab active" role="tab" tabindex="0">Workspace</div>
+          <div class="agent-tab" role="tab" tabindex="0">Mine</div>
+          <div class="agent-tab" role="tab" tabindex="0">Browse</div>
+        </div>
+        <div class="sidebar-item" role="button" tabindex="0" style="height:36px;"><div class="avatar-slot"><div class="bot-avatar orange">A</div><div class="online-dot"></div></div><span class="sidebar-item-name" style="flex:1;">Builder</span></div>
+        <div class="sidebar-item" role="button" tabindex="0" style="height:36px;"><div class="avatar-slot"><div class="bot-avatar mint">A</div><div class="online-dot"></div></div><span class="sidebar-item-name" style="flex:1;">EchoBot</span></div>
+        <div class="sidebar-item" role="button" tabindex="0" style="height:36px;"><div class="avatar-slot"><div class="bot-avatar blue">A</div><div class="online-dot" style="background:#bdc6d1;"></div></div><span class="sidebar-item-name">EuropeanEnterpriseAI...</span></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label" role="button" tabindex="0">Docs<img src="icons/expand-more.svg" width="16" height="16" alt="" /></div>
+        <div class="sidebar-item" role="button" tabindex="0" style="height:36px;"><div class="ch-icon"><img src="icons/doc.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">EuropeanEnterpriseAI...</span></div>
+        <div class="sidebar-item" role="button" tabindex="0" style="height:36px;"><div class="ch-icon"><img src="icons/doc.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">EuropeanEnterpriseAI...</span></div>
+      </div>
+    </aside>
+
+    <!-- Files Main Content -->
+    <main class="dm-main" style="background:#fff;" aria-label="Files 목록">
+
+      <!-- Header -->
+      <header style="height:56px;border-bottom:1px solid #dae0e7;display:flex;align-items:center;padding:0 20px;flex-shrink:0;">
+        <h1 style="font-size:18px;font-weight:600;color:#323234;">Files</h1>
+      </header>
+
+      <!-- Filter Tabs -->
+      <div style="display:flex;align-items:center;gap:4px;padding:12px 16px;border-bottom:1px solid #dae0e7;flex-shrink:0;" role="tablist" aria-label="파일 필터 탭">
+        <button class="files-tab active" role="tab" aria-selected="true" style="padding:4px 12px;border-radius:9999px;font-size:13px;font-weight:500;color:#323234;background:#e3eaf2;border:none;cursor:pointer;white-space:nowrap;">전체</button>
+        <button class="files-tab" role="tab" aria-selected="false" style="padding:4px 12px;border-radius:9999px;font-size:13px;font-weight:400;color:#8d97a5;background:transparent;border:none;cursor:pointer;white-space:nowrap;">최근 본 파일</button>
+        <button class="files-tab" role="tab" aria-selected="false" style="padding:4px 12px;border-radius:9999px;font-size:13px;font-weight:400;color:#8d97a5;background:transparent;border:none;cursor:pointer;white-space:nowrap;">즐겨찾기</button>
+        <button class="files-tab" role="tab" aria-selected="false" style="padding:4px 12px;border-radius:9999px;font-size:13px;font-weight:400;color:#8d97a5;background:transparent;border:none;cursor:pointer;white-space:nowrap;">캔버스</button>
+      </div>
+
+      <!-- File List -->
+      <div style="flex:1;overflow-y:auto;" role="list" aria-label="파일 목록">
+
+        <!-- Row helper styles are inline for self-containment -->
+        <style>
+          .file-list-row {
+            display:flex; align-items:center; gap:12px;
+            height:68px; padding:0 20px;
+            border-bottom:1px solid #f0f2f5;
+            cursor:pointer; transition:background 0.1s;
+          }
+          .file-list-row:hover { background:#f5f7fa; }
+          .file-list-icon {
+            width:36px; height:36px; border-radius:8px;
+            background:#ebe2fd; flex-shrink:0;
+            display:flex; align-items:center; justify-content:center;
+          }
+          .file-list-icon-inner {
+            width:24px; height:24px; border-radius:4px;
+            background:#fff; display:flex; align-items:center; justify-content:center;
+          }
+          .file-list-body {
+            flex:1; min-width:0;
+            display:flex; flex-direction:column; justify-content:center; gap:4px;
+          }
+          .file-list-name {
+            font-size:13px; font-weight:500; color:#323234;
+            overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+          }
+          .file-list-meta {
+            display:flex; align-items:center; gap:8px;
+            font-size:11px; font-weight:400; color:#44484c;
+          }
+          .file-list-meta-dot {
+            width:2px; height:2px; border-radius:50%;
+            background:#bdc6d1; flex-shrink:0;
+          }
+        </style>
+
+        <div class="file-list-row" role="listitem">
+          <div class="file-list-icon">
+            <div class="file-list-icon-inner">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="#5537ca"/></svg>
+            </div>
+          </div>
+          <div class="file-list-body">
+            <div class="file-list-name">1000020984.jpg</div>
+            <div class="file-list-meta">
+              <span>kimminhyun</span>
+              <span class="file-list-meta-dot"></span>
+              <span>May 29</span>
+              <span class="file-list-meta-dot"></span>
+              <span>555.7 KB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="file-list-row" role="listitem">
+          <div class="file-list-icon">
+            <div class="file-list-icon-inner">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="#5537ca"/></svg>
+            </div>
+          </div>
+          <div class="file-list-body">
+            <div class="file-list-name">스크린샷 2026-06-01 오전 9.10.34.png</div>
+            <div class="file-list-meta">
+              <span>yeji</span>
+              <span class="file-list-meta-dot"></span>
+              <span>Jun 1</span>
+              <span class="file-list-meta-dot"></span>
+              <span>555.7 KB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="file-list-row" role="listitem">
+          <div class="file-list-icon">
+            <div class="file-list-icon-inner">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="#5537ca"/></svg>
+            </div>
+          </div>
+          <div class="file-list-body">
+            <div class="file-list-name">스크린샷 2026-06-01 오전 9.10.01.png</div>
+            <div class="file-list-meta">
+              <span>yeji</span>
+              <span class="file-list-meta-dot"></span>
+              <span>Jun 1</span>
+              <span class="file-list-meta-dot"></span>
+              <span>555.7 KB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="file-list-row" role="listitem">
+          <div class="file-list-icon">
+            <div class="file-list-icon-inner">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="#5537ca"/></svg>
+            </div>
+          </div>
+          <div class="file-list-body">
+            <div class="file-list-name">image.png</div>
+            <div class="file-list-meta">
+              <span>yeji</span>
+              <span class="file-list-meta-dot"></span>
+              <span>Jun 1</span>
+              <span class="file-list-meta-dot"></span>
+              <span>555.7 KB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="file-list-row" role="listitem">
+          <div class="file-list-icon">
+            <div class="file-list-icon-inner">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="#5537ca"/></svg>
+            </div>
+          </div>
+          <div class="file-list-body">
+            <div class="file-list-name">image.png</div>
+            <div class="file-list-meta">
+              <span>Hyeonjeong Jun</span>
+              <span class="file-list-meta-dot"></span>
+              <span>May 28</span>
+              <span class="file-list-meta-dot"></span>
+              <span>417.9 KB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="file-list-row" role="listitem">
+          <div class="file-list-icon">
+            <div class="file-list-icon-inner">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="#5537ca"/></svg>
+            </div>
+          </div>
+          <div class="file-list-body">
+            <div class="file-list-name">image.png</div>
+            <div class="file-list-meta">
+              <span>Hyeonjeong Jun</span>
+              <span class="file-list-meta-dot"></span>
+              <span>May 28</span>
+              <span class="file-list-meta-dot"></span>
+              <span>2.6 MB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="file-list-row" role="listitem">
+          <div class="file-list-icon">
+            <div class="file-list-icon-inner">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="#5537ca"/></svg>
+            </div>
+          </div>
+          <div class="file-list-body">
+            <div class="file-list-name">image.png</div>
+            <div class="file-list-meta">
+              <span>Hyeonjeong Jun</span>
+              <span class="file-list-meta-dot"></span>
+              <span>May 28</span>
+              <span class="file-list-meta-dot"></span>
+              <span>360.5 KB</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<!-- ══ DM CHAT SCREEN OVERLAY ══ -->
+<div class="dm-screen" id="dmScreen" role="main" aria-label="DM 채팅 화면">
+  <div class="dm-app">
+
+    <!-- DM Tab Rail (same as home, DM tab active) -->
+    <nav class="tab-rail" aria-label="앱 탭">
+      <div class="tab-rail-top">
+        <div class="logo-area">
+          <img src="icons/logo.svg" width="24" height="24" alt="AIN Teams 로고" />
+        </div>
+        <div class="tab-list">
+          <div class="tab-item" role="button" tabindex="0" aria-label="Home" data-icon="icons/tab-home.svg" data-icon-fill="icons/tab-home-fill.svg" data-screen="home">
+            <div class="tab-icon-wrap">
+              <img src="icons/tab-home.svg" width="20" height="20" alt="" />
+            </div>
+            <span class="tab-label">Home</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Direct Messages" aria-current="page" data-icon="icons/tab-dm.svg" data-icon-fill="icons/tab-dm-fill.svg">
+            <div class="tab-icon-wrap active">
+              <img src="icons/tab-dm-fill.svg" width="20" height="20" alt="" />
+            </div>
+            <span class="tab-label">DM</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Activity" data-icon="icons/tab-activity.svg" data-icon-fill="icons/tab-activity-fill.svg">
+            <div class="tab-icon-wrap">
+              <img src="icons/tab-activity.svg" width="20" height="20" alt="" />
+              <span class="tab-badge">2</span>
+            </div>
+            <span class="tab-label">Activity</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Tools" data-icon="icons/tab-tools.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-tools.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Tools</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Workflow" data-icon="icons/tab-workflow.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-workflow.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Workflow</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Later" data-icon="icons/tab-later.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-later.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Later</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Files" data-icon="icons/tab-files.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-files.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Files</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Docs" data-icon="icons/tab-docs.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-docs.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Docs</span>
+          </div>
+        </div>
+      </div>
+      <div class="user-avatar-rail" aria-label="내 프로필" style="background:#a8b4c8;">
+        <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="13" r="7" fill="#fff" opacity="0.95"/>
+          <path d="M6 32c0-7 5.373-11 12-11s12 4 12 11" fill="#fff" opacity="0.95"/>
+        </svg>
+      </div>
+    </nav>
+
+    <!-- DM Sidebar -->
+    <aside class="dm-sidebar" aria-label="DM 목록">
+      <div class="dm-sidebar-header">
+        <span class="dm-sidebar-title">Direct Message</span>
+        <div class="dm-header-actions">
+          <button class="dm-header-btn" aria-label="검색">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#44484c"/></svg>
+          </button>
+          <button class="dm-header-btn" aria-label="새 DM 작성">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#44484c"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pinned agents -->
+      <div class="dm-pinned">
+        <div class="dm-pin-item">
+          <div class="dm-pin-avatar-wrap">
+            <div class="dm-pin-avatar teal">A</div>
+            <div class="dm-pin-dot"></div>
+          </div>
+          <span class="dm-pin-label">WebResea...</span>
+        </div>
+        <div class="dm-pin-item">
+          <div class="dm-pin-avatar-wrap">
+            <div class="dm-pin-avatar green">A</div>
+            <div class="dm-pin-dot"></div>
+          </div>
+          <span class="dm-pin-label">EchoBot</span>
+        </div>
+        <div class="dm-pin-item">
+          <div class="dm-pin-avatar-wrap">
+            <div class="dm-pin-avatar orange">A</div>
+            <div class="dm-pin-dot"></div>
+          </div>
+          <span class="dm-pin-label">EchoBot</span>
+        </div>
+      </div>
+
+      <!-- Filter tabs -->
+      <div class="dm-filter-tabs">
+        <div class="dm-filter-tab active">모두</div>
+        <div class="dm-filter-tab">읽지 않은</div>
+        <div class="dm-filter-tab">멘션</div>
+      </div>
+
+      <!-- Conversation list -->
+      <div class="dm-conv-list">
+        <div class="dm-conv-item" data-conv="self">
+          <div class="dm-conv-avatar-wrap">
+            <div class="dm-conv-avatar teal">A</div>
+            <div class="dm-conv-dot"></div>
+          </div>
+          <div class="dm-conv-text">
+            <div class="dm-conv-top"><span class="dm-conv-name">Aina Lee (나)</span><span class="dm-conv-time">월요일</span></div>
+            <div class="dm-conv-preview">You've got this!</div>
+          </div>
+        </div>
+        <div class="dm-conv-item" data-conv="aina1">
+          <div class="dm-conv-avatar-wrap">
+            <div class="dm-conv-avatar teal">A</div>
+            <div class="dm-conv-dot"></div>
+          </div>
+          <div class="dm-conv-text">
+            <div class="dm-conv-top"><span class="dm-conv-name">Aina Lee</span><span class="dm-conv-time">월요일</span></div>
+            <div class="dm-conv-preview">넵 감사합니다!</div>
+          </div>
+        </div>
+        <div class="dm-conv-item" data-conv="aina2">
+          <div class="dm-conv-avatar-wrap">
+            <div class="dm-conv-avatar teal">A</div>
+            <div class="dm-conv-dot"></div>
+          </div>
+          <div class="dm-conv-text">
+            <div class="dm-conv-top"><span class="dm-conv-name">Aina Lee</span><span class="dm-conv-time">월요일</span></div>
+            <div class="dm-conv-preview">올려주신 내용 확인 했습니다.</div>
+          </div>
+        </div>
+        <div class="dm-conv-item" data-conv="aina3">
+          <div class="dm-conv-avatar-wrap">
+            <div class="dm-conv-avatar teal">A</div>
+            <div class="dm-conv-dot"></div>
+          </div>
+          <div class="dm-conv-text">
+            <div class="dm-conv-top"><span class="dm-conv-name">Aina Lee</span><span class="dm-conv-time">월요일</span></div>
+            <div class="dm-conv-preview">어라..? 그게 왜 안됐지요..???</div>
+          </div>
+        </div>
+        <div class="dm-conv-item active" data-conv="group">
+          <div class="dm-conv-avatar-wrap">
+            <div class="dm-conv-avatar user" style="background:#a8b4c8;">
+              <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+                <circle cx="18" cy="13" r="7" fill="#fff" opacity="0.95"/>
+                <path d="M6 32c0-7 5.373-11 12-11s12 4 12 11" fill="#fff" opacity="0.95"/>
+              </svg>
+            </div>
+          </div>
+          <div class="dm-conv-text">
+            <div class="dm-conv-top"><span class="dm-conv-name">Aina Lee</span><span class="dm-conv-time">월요일</span></div>
+            <div class="dm-conv-preview">AI Company</div>
+          </div>
+        </div>
+        <div class="dm-conv-item" data-conv="aina4">
+          <div class="dm-conv-avatar-wrap">
+            <div class="dm-conv-avatar teal">A</div>
+            <div class="dm-conv-dot"></div>
+          </div>
+          <div class="dm-conv-text">
+            <div class="dm-conv-top"><span class="dm-conv-name">Aina Lee</span><span class="dm-conv-time">월요일</span></div>
+            <div class="dm-conv-preview link">https://www.notion.so/comcom.Codex</div>
+          </div>
+        </div>
+        <div class="dm-conv-item" data-conv="aina5">
+          <div class="dm-conv-avatar-wrap">
+            <div class="dm-conv-avatar teal">A</div>
+            <div class="dm-conv-dot"></div>
+          </div>
+          <div class="dm-conv-text">
+            <div class="dm-conv-top"><span class="dm-conv-name">Aina Lee</span><span class="dm-conv-time">월요일</span></div>
+            <div class="dm-conv-preview">인공지능 서비스 회사</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- DM Main Chat Area -->
+    <main class="dm-main" aria-label="DM 채팅">
+      <header class="dm-top-nav">
+        <h1 class="dm-top-title">Haechan Lee, Jiyoung An, Finn, Jiyoung Yang, Yoojin Ko, chanho, Hyeonjeong Jun</h1>
+        <div class="dm-members-badge">8 members</div>
+        <button class="dm-more-btn" aria-label="더 보기">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="#44484c"/></svg>
+        </button>
+      </header>
+
+      <div class="dm-message-list message-list" role="log" aria-live="polite" aria-label="메시지 목록">
+
+        <!-- Message 1 -->
+        <div class="msg-row">
+          <div class="msg-avatar mint" aria-hidden="true">A</div>
+          <div class="msg-content">
+            <div class="msg-meta">
+              <span class="msg-author">Hyeonjeong Jun</span>
+              <span class="msg-time">12:42 PM</span>
+            </div>
+            <p class="msg-text">청년다방 크림 차돌 떡볶이</p>
+            <div class="link-preview">
+              <span class="link-domain">instagram.com</span>
+              <span class="link-title">Instagram</span>
+            </div>
+            <div class="reply-indicator" role="button" tabindex="0" aria-label="2개의 댓글 보기">
+              <div class="reply-avatar" aria-hidden="true">A</div>
+              <span class="reply-count">2개의 댓글</span>
+              <span class="reply-time">5월 16일 1:24 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 2 -->
+        <div class="msg-row highlighted">
+          <div class="msg-avatar mint" aria-hidden="true">A</div>
+          <div class="msg-content">
+            <div class="msg-meta">
+              <span class="msg-author">Hyeonjeong Jun</span>
+              <span class="msg-time">1:32 PM</span>
+            </div>
+            <p class="msg-text">야근하면서 차돌크림떡볶이 마스터에 관심 있으신 분? 특히 치즈밥리조또😋 (오늘은 아님...)</p>
+            <div class="image-grid" role="img" aria-label="음식 사진 5장">
+              <div class="food-img" style="background:#6b5e45;"></div>
+              <div class="food-img" style="background:#4a6b3a;"></div>
+              <div class="food-img" style="background:#8b2323;"></div>
+              <div class="food-img" style="background:#f5d96e;"></div>
+              <div class="food-img" style="background:#e8e0d0;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 3 -->
+        <div class="msg-row">
+          <div class="msg-avatar pink" aria-hidden="true">A</div>
+          <div class="msg-content">
+            <div class="msg-meta">
+              <span class="msg-author">Finn</span>
+              <span class="msg-time">3:03 PM</span>
+            </div>
+            <p class="msg-text">진짜 폭력적인 비주얼이네요...</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Input Area (same as home) -->
+      <div class="input-area-wrapper">
+        <div class="input-area" role="form" aria-label="메시지 입력">
+          <div class="input-toolbar-top" role="toolbar" aria-label="서식 도구모음">
+            <button class="toolbar-icon-btn" title="굵게" aria-label="굵게"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg></button>
+            <button class="toolbar-icon-btn" title="기울임꼴" aria-label="기울임꼴"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z"/></svg></button>
+            <button class="toolbar-icon-btn" title="취소선" aria-label="취소선"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M10 19h4v-3h-4v3zM5 4v3h5v3h4V7h5V4H5zM3 14h18v-2H3v2z"/></svg></button>
+            <button class="toolbar-icon-btn" title="밑줄" aria-label="밑줄"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/></svg></button>
+            <div class="toolbar-divider"></div>
+            <button class="toolbar-icon-btn" title="링크" aria-label="링크"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></button>
+            <button class="toolbar-icon-btn" title="글머리 기호" aria-label="글머리 기호"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z"/></svg></button>
+            <button class="toolbar-icon-btn" title="번호 매기기" aria-label="번호 매기기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 17h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2v1zm5-6v2h14V5H7zm0 14h14v-2H7v2zm0-6h14v-2H7v2z"/></svg></button>
+            <div class="toolbar-divider"></div>
+            <button class="toolbar-icon-btn" title="코드" aria-label="코드"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg></button>
+            <button class="toolbar-icon-btn" title="이미지" aria-label="이미지"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></button>
+            <button class="toolbar-icon-btn" title="인용" aria-label="인용"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg></button>
+          </div>
+          <div class="input-text-area" role="textbox" contenteditable="true" aria-label="메시지 입력 영역" aria-placeholder="Ask anything..">
+            <span style="color:#8d97a5;pointer-events:none;">Ask anything..</span>
+          </div>
+          <div class="input-bottom-row" role="toolbar" aria-label="첨부 도구모음">
+            <button class="input-icon-btn" title="파일 첨부" aria-label="파일 첨부"><img src="icons/attach.svg" width="20" height="20" alt="" /></button>
+            <button class="input-icon-btn" title="이모지" aria-label="이모지"><img src="icons/emoji.svg" width="20" height="20" alt="" /></button>
+            <button class="input-icon-btn" title="멘션" aria-label="멘션"><img src="icons/mention.svg" width="20" height="20" alt="" /></button>
+            <button class="send-btn" title="메시지 보내기" aria-label="메시지 보내기">
+              <svg width="20" height="20" viewBox="0 -960 960 960" fill="none"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<!-- ══ THREADS SCREEN OVERLAY ══ -->
+<style>
+  .threads-feed { flex: 1; overflow-y: auto; }
+  .thread-row {
+    display: flex; gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid #f0f2f5;
+    cursor: pointer; transition: background 0.12s;
+  }
+  .thread-row:hover { background: #f7f9fc; }
+  .th-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #fff;
+    margin-top: 1px;
+  }
+  .th-avatar.blue   { background: #2563eb; }
+  .th-avatar.teal   { background: #0891b2; }
+  .th-avatar.pink   { background: #db2777; }
+  .th-avatar.green  { background: #16a34a; }
+  .th-avatar.orange { background: #ea580c; }
+  .th-avatar.purple { background: #7c3aed; }
+  .th-avatar.gray   { background: #6b7280; }
+  .th-avatar.bot    { background: #eef2f7; }
+  .th-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .th-meta {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .th-author { font-size: 14px; font-weight: 600; color: #323234; }
+  .th-channel {
+    font-size: 12px; font-weight: 500; color: #44484c;
+    background: #eef2f7; border-radius: 4px;
+    padding: 1px 6px;
+  }
+  .th-time { font-size: 12px; color: #8d97a5; margin-left: auto; flex-shrink: 0; }
+  .th-text {
+    font-size: 14px; color: #44484c; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .th-link {
+    font-size: 12px; color: #126693; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .th-replies {
+    display: flex; align-items: center; gap: 6px; margin-top: 2px;
+  }
+  .th-reply-avatars { display: flex; }
+  .th-reply-avatar {
+    width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #fff;
+    margin-right: -5px; font-size: 9px; font-weight: 700; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .th-reply-count { font-size: 12px; font-weight: 500; color: #126693; margin-left: 8px; }
+  .th-reply-time  { font-size: 12px; color: #8d97a5; }
+</style>
+
+<div class="dm-screen" id="threadsScreen" role="main" aria-label="Threads 화면">
+  <div class="dm-app">
+
+    <!-- Tab Rail (Home active – Threads is a home sub-view) -->
+    <nav class="tab-rail" aria-label="앱 탭">
+      <div class="tab-rail-top">
+        <div class="logo-area"><img src="icons/logo.svg" width="24" height="24" alt="AIN Teams 로고" /></div>
+        <div class="tab-list">
+          <div class="tab-item" role="button" tabindex="0" aria-label="Home" aria-current="page" data-icon="icons/tab-home.svg" data-icon-fill="icons/tab-home-fill.svg" onclick="closeThreadsScreen()">
+            <div class="tab-icon-wrap active"><img src="icons/tab-home-fill.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Home</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Direct Messages" data-icon="icons/tab-dm.svg" data-icon-fill="icons/tab-dm-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-dm.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">DM</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Activity" data-icon="icons/tab-activity.svg" data-icon-fill="icons/tab-activity-fill.svg">
+            <div class="tab-icon-wrap">
+              <img src="icons/tab-activity.svg" width="20" height="20" alt="" />
+              <span class="tab-badge">2</span>
+            </div>
+            <span class="tab-label">Activity</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Tools" data-icon="icons/tab-tools.svg" data-icon-fill="icons/tab-tools-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-tools.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Tools</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Workflow" data-icon="icons/tab-workflow.svg" data-icon-fill="icons/tab-workflow-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-workflow.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Workflow</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Later" data-icon="icons/tab-later.svg" data-icon-fill="icons/tab-later-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-later.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Later</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Files" data-icon="icons/tab-files.svg" data-icon-fill="icons/tab-files-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-files.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Files</span>
+          </div>
+          <div class="tab-item" role="button" tabindex="0" aria-label="Docs" data-icon="icons/tab-docs.svg" data-icon-fill="icons/tab-docs-fill.svg">
+            <div class="tab-icon-wrap"><img src="icons/tab-docs.svg" width="20" height="20" alt="" /></div>
+            <span class="tab-label">Docs</span>
+          </div>
+        </div>
+      </div>
+      <div class="user-avatar-rail" aria-label="내 프로필" style="background:#a8b4c8;">
+        <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="13" r="7" fill="#fff" opacity="0.95"/>
+          <path d="M6 32c0-7 5.373-11 12-11s12 4 12 11" fill="#fff" opacity="0.95"/>
+        </svg>
+      </div>
+    </nav>
+
+    <!-- Sidebar (Threads 항목 활성) -->
+    <aside class="sidebar" aria-label="사이드바 내비게이션">
+      <div class="sidebar-header">
+        <div class="workspace-name">comcom<img src="icons/expand-more.svg" width="16" height="16" alt="" /></div>
+        <div style="display:flex;gap:4px;align-items:center;">
+          <button class="sidebar-header-btn" aria-label="검색" onclick="openSearch()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#44484c"/></svg>
+          </button>
+          <button class="sidebar-header-btn" aria-label="새 메시지 작성">
+            <img src="icons/edit.svg" width="18" height="18" alt="" />
+          </button>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-item active" role="button" tabindex="0">
+          <div class="ch-icon"><img src="icons/threads.svg" width="24" height="24" alt="" /></div>
+          <span class="sidebar-item-name" style="font-weight:600;">Threads</span>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label" role="button" tabindex="0">Channels<img src="icons/expand-more.svg" width="16" height="16" alt="" /></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">general</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">comcom</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">government</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">kakaopaysecurities</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">marketing</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">slack-alert</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="ch-icon"><img src="icons/hash.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">Slack-tech-2024</span></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label" role="button" tabindex="0">Direct Messages<img src="icons/expand-more.svg" width="16" height="16" alt="" /></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="group-avatar">8</div><span class="sidebar-item-name">Haechan Lee, Jiyoun...</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="avatar-slot"><div class="bot-avatar mint">A</div><div class="online-dot"></div></div><span class="sidebar-item-name">EchoBot</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="avatar-slot"><div class="bot-avatar blue">A</div><div class="online-dot"></div></div><span class="sidebar-item-name">TimelineOrganizer</span></div>
+        <div class="sidebar-item" role="button" tabindex="0"><div class="avatar-slot"><div class="bot-avatar orange">A</div><div class="online-dot"></div></div><span class="sidebar-item-name">Builder</span></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label" role="button" tabindex="0">Agents<img src="icons/expand-more.svg" width="16" height="16" alt="" /></div>
+        <div class="agent-tabs" role="tablist">
+          <div class="agent-tab active" role="tab" tabindex="0">Workspace</div>
+          <div class="agent-tab" role="tab" tabindex="0">Mine</div>
+          <div class="agent-tab" role="tab" tabindex="0">Browse</div>
+        </div>
+        <div class="sidebar-item" role="button" tabindex="0" style="height:36px;"><div class="avatar-slot"><div class="bot-avatar orange">A</div><div class="online-dot"></div></div><span class="sidebar-item-name" style="flex:1;">Builder</span></div>
+        <div class="sidebar-item" role="button" tabindex="0" style="height:36px;"><div class="avatar-slot"><div class="bot-avatar mint">A</div><div class="online-dot"></div></div><span class="sidebar-item-name" style="flex:1;">EchoBot</span></div>
+        <div class="sidebar-item" role="button" tabindex="0" style="height:36px;"><div class="avatar-slot"><div class="bot-avatar blue">A</div><div class="online-dot" style="background:#bdc6d1;"></div></div><span class="sidebar-item-name">EuropeanEnterpriseAI...</span></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label" role="button" tabindex="0">Docs<img src="icons/expand-more.svg" width="16" height="16" alt="" /></div>
+        <div class="sidebar-item" role="button" tabindex="0" style="height:36px;"><div class="ch-icon"><img src="icons/doc.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">EuropeanEnterpriseAI...</span></div>
+        <div class="sidebar-item" role="button" tabindex="0" style="height:36px;"><div class="ch-icon"><img src="icons/doc.svg" width="20" height="20" alt="" /></div><span class="sidebar-item-name">EuropeanEnterpriseAI...</span></div>
+      </div>
+    </aside>
+
+    <!-- Threads Main Content -->
+    <main class="dm-main" style="background:#fff; display:flex; flex-direction:column;" aria-label="Threads 피드">
+
+      <!-- Header -->
+      <header style="height:56px;border-bottom:1px solid #dae0e7;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;">
+        <h1 style="font-size:18px;font-weight:600;color:#323234;">Threads</h1>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <!-- 정렬 버튼 -->
+          <button style="display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;border:1px solid #dae0e7;background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:#44484c;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 18h4v-2H4v2zM4 6v2h16V6H4zm0 7h10v-2H4v2z" fill="#44484c"/></svg>
+            최신순
+          </button>
+          <!-- 읽음 처리 버튼 -->
+          <button style="display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;border:none;background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:#44484c;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="#44484c"/></svg>
+            모두 읽음
+          </button>
+        </div>
+      </header>
+
+      <!-- Thread Feed -->
+      <div class="threads-feed" role="list" aria-label="스레드 목록">
+
+        <!-- Row 1: Sebastian – LinkedIn -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar blue">S</div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">Sebastian</span>
+              <span class="th-channel">#kakaopaysecurities</span>
+              <span class="th-time">오후 3:30</span>
+            </div>
+            <p class="th-text">We really need to start building more visibility, so any ideas, comments or setbacks would create a lot https://www.linkedin.com/posts/...</p>
+            <div class="th-replies">
+              <div class="th-reply-avatars">
+                <div class="th-reply-avatar" style="background:#db2777;">J</div>
+                <div class="th-reply-avatar" style="background:#0891b2;">E</div>
+                <div class="th-reply-avatar" style="background:#16a34a;">D</div>
+              </div>
+              <span class="th-reply-count">4개의 댓글</span>
+              <span class="th-reply-time">· 6월 13일 3:42 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: enh4500 -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar teal">E</div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">enh4500</span>
+              <span class="th-channel">#kakaopaysecurities</span>
+              <span class="th-time">오후 2:14</span>
+            </div>
+            <p class="th-text">여러 건 언급합니다</p>
+          </div>
+        </div>
+
+        <!-- Row 3: Judy (1) -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar pink">J</div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">Judy</span>
+              <span class="th-channel">#kakaopaysecurities</span>
+              <span class="th-time">오전 11:52</span>
+            </div>
+            <p class="th-text">여러 건 언급합니다</p>
+            <div class="th-replies">
+              <div class="th-reply-avatars">
+                <div class="th-reply-avatar" style="background:#2563eb;">S</div>
+                <div class="th-reply-avatar" style="background:#ea580c;">F</div>
+              </div>
+              <span class="th-reply-count">2개의 댓글</span>
+              <span class="th-reply-time">· 6월 13일 12:05 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 4: Judy (2) -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar pink">J</div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">Judy</span>
+              <span class="th-channel">#kakaopaysecurities</span>
+              <span class="th-time">오전 11:48</span>
+            </div>
+            <p class="th-text">여러 건 언급합니다</p>
+          </div>
+        </div>
+
+        <!-- Row 5: Judy (3) -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar pink">J</div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">Judy</span>
+              <span class="th-channel">#kakaopaysecurities</span>
+              <span class="th-time">오전 11:45</span>
+            </div>
+            <p class="th-text">여러 건 언급합니다</p>
+          </div>
+        </div>
+
+        <!-- Row 6: Dan Hyunmin -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar green">D</div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">Dan Hyunmin</span>
+              <span class="th-channel">#kakaopaysecurities</span>
+              <span class="th-time">오전 10:30</span>
+            </div>
+            <p class="th-text">팀 장을 들으세요</p>
+          </div>
+        </div>
+
+        <!-- Row 7: Sebastian reply -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar blue">S</div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">Sebastian</span>
+              <span class="th-channel">#kakaopaysecurities</span>
+              <span class="th-time">오전 9:51</span>
+            </div>
+            <p class="th-text">@Agnieszka Ramos 님에게 최신 IR Deck으로 요청해주세요.</p>
+          </div>
+        </div>
+
+        <!-- Row 8: [ONED] Atlas-news -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar bot" style="border:1px solid #dae0e7;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7H3a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7 14v2h2v-2H7zm6 0v2h2v-2h-2zm-2 4a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" fill="#8d97a5"/></svg>
+          </div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">[ONED] Atlas-news</span>
+              <span class="th-channel">#kakaopaysecurities</span>
+              <span class="th-time">오전 8:01</span>
+            </div>
+            <p class="th-text">카카오페이증권의 주요 금융 뉴스 업데이트 및 시장 현황을 알려드립니다.</p>
+          </div>
+        </div>
+
+        <!-- Row 9: [ONED] Atlas-news – slack-alert -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar bot" style="border:1px solid #dae0e7;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7H3a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7 14v2h2v-2H7zm6 0v2h2v-2h-2zm-2 4a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" fill="#8d97a5"/></svg>
+          </div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">[ONED] Atlas-news</span>
+              <span class="th-channel">#slack-alert</span>
+              <span class="th-time">오전 8:00</span>
+            </div>
+            <p class="th-text">Alert: 시스템 모니터링 알림이 발생하였습니다. 담당자 확인 요청드립니다.</p>
+          </div>
+        </div>
+
+        <!-- Row 10: [ONED] Atlas-news – Slack-tech-2024 -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar bot" style="border:1px solid #dae0e7;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7H3a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7 14v2h2v-2H7zm6 0v2h2v-2h-2zm-2 4a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" fill="#8d97a5"/></svg>
+          </div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">[ONED] Atlas-news</span>
+              <span class="th-channel">#Slack-tech-2024</span>
+              <span class="th-time">어제</span>
+            </div>
+            <p class="th-text">기술 채널 주요 업데이트 요약입니다. 최신 SDK 변경 사항 및 배포 공지를 확인하세요.</p>
+            <div class="th-replies">
+              <div class="th-reply-avatars">
+                <div class="th-reply-avatar" style="background:#db2777;">J</div>
+                <div class="th-reply-avatar" style="background:#2563eb;">S</div>
+              </div>
+              <span class="th-reply-count">3개의 댓글</span>
+              <span class="th-reply-time">· 6월 12일 10:44 AM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 11: Judy – marketing -->
+        <div class="thread-row" role="listitem">
+          <div class="th-avatar pink">J</div>
+          <div class="th-body">
+            <div class="th-meta">
+              <span class="th-author">Judy</span>
+              <span class="th-channel">#marketing</span>
+              <span class="th-time">어제</span>
+            </div>
+            <p class="th-text">다음 주 업무 일정 공유합니다. 월요일 오전 10시 전체 미팅 예정이니 참석 부탁드립니다.</p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<!-- ══ SEARCH MODAL ══ -->
+<style>
+  .search-modal { transition: none; }
+
+  /* Input row */
+  .sm-input-row {
+    display: flex; align-items: center; gap: 8px;
+    height: 52px; padding: 0 14px;
+    border-bottom: 1px solid #bdc6d1;
+  }
+  .sm-input-left {
+    flex: 1; min-width: 0;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sm-filter-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #daf1ff; border-radius: 10px;
+    padding: 0 6px 0 8px; height: 20px; flex-shrink: 0;
+    font-size: 14px; font-weight: 600; color: #126693;
+    white-space: nowrap;
+  }
+  .sm-filter-tag-x {
+    display: flex; align-items: center; cursor: pointer;
+    padding: 0 1px; opacity: 0.6;
+  }
+  .sm-filter-tag-x:hover { opacity: 1; }
+  .sm-real-input {
+    flex: 1; border: none; outline: none; background: transparent;
+    font-family: inherit; font-size: 16px; font-weight: 400; color: #323234;
+    min-width: 80px;
+  }
+  .sm-real-input::placeholder { color: #8d97a5; }
+  .sm-input-right { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+  .sm-icon-btn {
+    width: 24px; height: 24px; border-radius: 4px;
+    background: transparent; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.1s;
+  }
+  .sm-icon-btn:hover { background: #eef2f7; }
+  .sm-icon-btn.active { background: #eef1f7; }
+  .sm-close-btn {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: transparent; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.1s;
+  }
+  .sm-close-btn:hover { background: #eef2f7; }
+
+  /* Filter tabs (typing state) */
+  .sm-filter-tabs {
+    display: flex; gap: 6px; align-items: center;
+    padding: 8px 14px;
+    border-bottom: 1px solid #f0f2f5;
+  }
+  .sm-ftab {
+    padding: 3px 10px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: none; transition: background 0.1s;
+  }
+  .sm-ftab.active { background: #126693; color: #fff; }
+  .sm-ftab.inactive { background: transparent; color: #44484c; border: 1px solid #dae0e7; }
+
+  /* Results */
+  .sm-results { display: flex; flex-direction: column; }
+  .sm-section-label {
+    padding: 10px 14px 4px;
+    font-size: 12px; font-weight: 400; color: #44484c;
+  }
+  .sm-row {
+    display: flex; align-items: center; gap: 8px;
+    height: 40px; padding: 0 14px; cursor: pointer;
+    transition: background 0.1s;
+  }
+  .sm-row:hover { background: #f5f7fa; }
+  .sm-row-icon {
+    width: 20px; height: 20px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sm-row-text {
+    flex: 1; font-size: 14px; font-weight: 400; color: #44484c;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sm-row-meta {
+    font-size: 12px; font-weight: 400; color: #44484c; flex-shrink: 0;
+  }
+</style>
+
+<div class="search-backdrop" id="searchBackdrop" role="dialog" aria-modal="true" aria-label="검색">
+  <div class="search-modal" id="searchModal">
+
+    <!-- Input Row -->
+    <div class="sm-input-row">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;">
+        <path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#8d97a5"/>
+      </svg>
+      <div class="sm-input-left">
+        <!-- 필터 태그 (동적) -->
+        <span id="smFilterTag" style="display:none;" class="sm-filter-tag">
+          <span id="smFilterTagText"></span>
+          <span class="sm-filter-tag-x" id="smFilterTagX">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="#126693"/></svg>
+          </span>
+        </span>
+        <input
+          type="text" id="smInput" class="sm-real-input"
+          placeholder="사람, 채널, 파일, 워크플로우 등에서 검색"
+          autocomplete="off" spellcheck="false"
+        />
+      </div>
+      <div class="sm-input-right">
+        <button class="sm-icon-btn" id="smFilterBtn" aria-label="필터">
+          <svg width="15" height="10" viewBox="0 0 15 10" fill="none">
+            <path d="M0 0h15v1.5H0V0zm3 4.25h9v1.5H3v-1.5zm3 4.25h3V10H6V8.5z" fill="#8d97a5"/>
+          </svg>
+        </button>
+        <button class="sm-close-btn" id="searchCloseBtn" aria-label="닫기">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="#8d97a5"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 상태별 컨텐츠 (JS로 렌더링) -->
+    <div id="smBody"></div>
+
+  </div>
+</div>
+
 <script>
-  // Tab rail 클릭 — active 상태 + fill 아이콘 교체
-  document.querySelectorAll('.tab-item').forEach(tab => {
-    tab.addEventListener('click', () => {
-      // 모든 탭 비활성화
-      document.querySelectorAll('.tab-item').forEach(t => {
-        t.querySelector('.tab-icon-wrap').classList.remove('active');
-        t.removeAttribute('aria-current');
-        const img = t.querySelector('img');
-        const outlineIcon = t.dataset.icon;
-        if (outlineIcon) img.src = outlineIcon;
-      });
-      // 클릭된 탭 활성화
-      tab.querySelector('.tab-icon-wrap').classList.add('active');
-      tab.setAttribute('aria-current', 'page');
-      const img = tab.querySelector('img');
-      const fillIcon = tab.dataset.iconFill;
-      if (fillIcon) img.src = fillIcon;
+  const dmScreen = document.getElementById('dmScreen');
+  const filesScreen = document.getElementById('filesScreen');
+  const threadsScreen = document.getElementById('threadsScreen');
+
+  function openFilesScreen() {
+    filesScreen.classList.add('visible');
+    // Update home rail active state
+    document.querySelectorAll('.app > nav .tab-item').forEach(t => {
+      t.querySelector('.tab-icon-wrap').classList.remove('active');
+      t.removeAttribute('aria-current');
+      const img = t.querySelector('img');
+      if (t.dataset.icon) img.src = t.dataset.icon;
     });
-    tab.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') tab.click(); });
+    const filesTabHome = document.querySelector('.app > nav .tab-item[aria-label="Files"]');
+    if (filesTabHome) {
+      filesTabHome.querySelector('.tab-icon-wrap').classList.add('active');
+      filesTabHome.setAttribute('aria-current', 'page');
+      const img = filesTabHome.querySelector('img');
+      if (filesTabHome.dataset.iconFill) img.src = filesTabHome.dataset.iconFill;
+    }
+  }
+
+  function closeFilesScreen() {
+    filesScreen.classList.remove('visible');
+  }
+
+  function openThreadsScreen() {
+    threadsScreen.classList.add('visible');
+  }
+  function closeThreadsScreen() {
+    threadsScreen.classList.remove('visible');
+  }
+
+  // Home screen: Files tab → open files screen
+  document.querySelector('.app > nav .tab-item[aria-label="Files"]')
+    ?.addEventListener('click', openFilesScreen);
+
+  // Files screen: Home tab → close
+  document.querySelectorAll('#filesScreen .tab-item[data-screen="home"], #filesScreen .tab-item[aria-label="Home"]').forEach(el => {
+    el.addEventListener('click', closeFilesScreen);
+  });
+
+  // Files screen: filter tabs
+  document.querySelectorAll('#filesScreen .files-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('#filesScreen .files-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+        t.style.background = 'transparent';
+        t.style.color = '#8d97a5';
+        t.style.fontWeight = '400';
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      tab.style.background = '#e3eaf2';
+      tab.style.color = '#323234';
+      tab.style.fontWeight = '500';
+    });
+  });
+
+  function openDMScreen() {
+    dmScreen.classList.add('visible');
+    // Activate DM tab in home screen rail
+    document.querySelectorAll('.app > nav .tab-item').forEach(t => {
+      t.querySelector('.tab-icon-wrap').classList.remove('active');
+      t.removeAttribute('aria-current');
+      const img = t.querySelector('img');
+      if (t.dataset.icon) img.src = t.dataset.icon;
+    });
+    const dmTabHome = document.querySelector('.app > nav .tab-item[aria-label="Direct Messages"]');
+    if (dmTabHome) {
+      dmTabHome.querySelector('.tab-icon-wrap').classList.add('active');
+      dmTabHome.setAttribute('aria-current', 'page');
+      const img = dmTabHome.querySelector('img');
+      if (dmTabHome.dataset.iconFill) img.src = dmTabHome.dataset.iconFill;
+    }
+  }
+
+  function closeDMScreen() {
+    dmScreen.classList.remove('visible');
+  }
+
+  // Home screen: Threads sidebar item → open Threads screen
+  document.querySelector('.app .sidebar .sidebar-item[aria-label="Threads"]')
+    ?.addEventListener('click', openThreadsScreen);
+
+  // Home screen: clicking any item in the Direct Messages section → open DM screen
+  document.querySelectorAll('[data-section="dm"] .sidebar-item').forEach(el => {
+    el.addEventListener('click', openDMScreen);
+  });
+
+  // DM tab in home rail → open DM screen
+  document.querySelector('.app > nav .tab-item[aria-label="Direct Messages"]')
+    ?.addEventListener('click', openDMScreen);
+
+  // DM screen: clicking Home tab → close DM screen
+  document.querySelectorAll('#dmScreen .tab-item[data-screen="home"], #dmScreen .tab-item[aria-label="Home"]').forEach(el => {
+    el.addEventListener('click', closeDMScreen);
+  });
+
+  // DM screen: DM sidebar conv items — active state
+  document.querySelectorAll('.dm-conv-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.dm-conv-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+
+  // DM screen: filter tabs
+  document.querySelectorAll('.dm-filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.dm-filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // Tab rail 클릭 — active 상태 + fill 아이콘 교체 (각 rail 내부에서만 scope)
+  document.querySelectorAll('.tab-rail').forEach(rail => {
+    rail.querySelectorAll('.tab-item').forEach(tab => {
+      tab.addEventListener('click', () => {
+        rail.querySelectorAll('.tab-item').forEach(t => {
+          t.querySelector('.tab-icon-wrap').classList.remove('active');
+          t.removeAttribute('aria-current');
+          const img = t.querySelector('img');
+          const outlineIcon = t.dataset.icon;
+          if (outlineIcon) img.src = outlineIcon;
+        });
+        tab.querySelector('.tab-icon-wrap').classList.add('active');
+        tab.setAttribute('aria-current', 'page');
+        const img = tab.querySelector('img');
+        const fillIcon = tab.dataset.iconFill;
+        if (fillIcon) img.src = fillIcon;
+      });
+      tab.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') tab.click(); });
+    });
   });
 
   // Sidebar 아이템 클릭 (채널, DM, 에이전트, Docs 행)
@@ -704,15 +2128,150 @@
     });
   });
 
-  // Search bar 클릭 — 포커스 효과
-  const searchBar = document.querySelector('.sidebar-search');
-  if (searchBar) {
-    searchBar.addEventListener('click', () => {
-      searchBar.style.outline = '2px solid #6e19de';
-      searchBar.style.outlineOffset = '-2px';
-      setTimeout(() => { searchBar.style.outline = ''; }, 1200);
-    });
+  // ── Search modal ──────────────────────────────────────────────
+  const searchBackdrop = document.getElementById('searchBackdrop');
+  const smInput        = document.getElementById('smInput');
+  const smFilterTag    = document.getElementById('smFilterTag');
+  const smFilterTagTxt = document.getElementById('smFilterTagText');
+  const smFilterTagX   = document.getElementById('smFilterTagX');
+  const smFilterBtn    = document.getElementById('smFilterBtn');
+  const smBody         = document.getElementById('smBody');
+
+  // SVG helpers
+  const CLOCK_SVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" fill="#44484c"/></svg>`;
+  const HASH_SVG  = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 10V8h-4V4h-2v4h-4V4H8v4H4v2h4l-1 4H4v2h3l-1 4h2l1-4h4l-1 4h2l1-4h3v-2h-3l1-4h3zm-7 4h-4l1-4h4l-1 4z" fill="#44484c"/></svg>`;
+  const PERSON_SVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="#44484c"/></svg>`;
+
+  // State: 'default' | 'typing' | 'people' | 'channel'
+  let smState = 'default';
+  let activeFilterTab = 'channels';
+
+  const RECENT_RESULTS = [
+    { text: '님에게 최신 IR Deck으로 요청해주세요.', channel: '#general', tag: '@yeji' },
+    { text: '님에게 최신 IR Deck으로 요청해주세요.', channel: '#comcom', tag: '@Hyeonjeong' },
+  ];
+  const CHANNEL_RESULTS = [
+    { icon: HASH_SVG, text: 'comcom', meta: '워크스페이스 채널' },
+    { icon: HASH_SVG, text: 'kakaopaysecurity', meta: '워크스페이스 채널' },
+  ];
+  const PEOPLE_RESULTS = [
+    { icon: PERSON_SVG, text: 'comcom', meta: '워크스페이스' },
+    { icon: PERSON_SVG, text: 'kakaopaysecurity', meta: '워크스페이스' },
+    { icon: PERSON_SVG, text: 'government', meta: '워크스페이스' },
+  ];
+
+  function makeRow(icon, text, meta) {
+    return `<div class="sm-row">
+      <div class="sm-row-icon">${icon}</div>
+      <span class="sm-row-text">${text}</span>
+      ${meta ? `<span class="sm-row-meta">${meta}</span>` : ''}
+    </div>`;
   }
+
+  function renderSmBody() {
+    smFilterTag.style.display = 'none';
+    smFilterBtn.classList.remove('active');
+
+    if (smState === 'default') {
+      smInput.placeholder = '사람, 채널, 파일, 워크플로우 등에서 검색';
+      smBody.innerHTML = `
+        <div class="sm-section-label">최근 검색</div>
+        ${RECENT_RESULTS.map(r => `
+          <div class="sm-row" style="height:44px;">
+            <div class="sm-row-icon">${CLOCK_SVG}</div>
+            <span class="sm-filter-tag" style="cursor:default;">${r.tag}</span>
+            <span class="sm-row-text">${r.text}</span>
+            <span class="sm-row-meta">${r.channel}</span>
+          </div>`).join('')}`;
+
+    } else if (smState === 'typing') {
+      smInput.placeholder = '사람, 채널, 파일, 워크플로우 등에서 검색';
+      smFilterBtn.classList.add('active');
+      const tabs = [
+        { id: 'channels', label: 'Channels' },
+        { id: 'docs',     label: 'Docs' },
+      ];
+      const tabsHtml = tabs.map(t =>
+        `<button class="sm-ftab ${t.id === activeFilterTab ? 'active' : 'inactive'}"
+          onclick="setFilterTab('${t.id}')">${t.label}</button>`
+      ).join('');
+      const rows = CHANNEL_RESULTS.map(r => makeRow(r.icon, r.text, r.meta)).join('');
+      smBody.innerHTML = `
+        <div class="sm-filter-tabs">${tabsHtml}</div>
+        <div class="sm-results">${rows}</div>`;
+
+    } else if (smState === 'channel') {
+      smInput.placeholder = 'Search comcom';
+      smFilterTag.style.display = 'inline-flex';
+      smFilterTagTxt.textContent = '# in: Channel';
+      smBody.innerHTML = `
+        <div class="sm-section-label">최근 검색</div>
+        ${RECENT_RESULTS.map(r => `
+          <div class="sm-row" style="height:44px;">
+            <div class="sm-row-icon">${CLOCK_SVG}</div>
+            <span class="sm-row-text">${r.tag} ${r.text}</span>
+            <span class="sm-row-meta">${r.channel}</span>
+          </div>`).join('')}`;
+
+    } else if (smState === 'people') {
+      smInput.placeholder = 'Search comcom';
+      smFilterTag.style.display = 'inline-flex';
+      smFilterTagTxt.textContent = '@User';
+      const rows = PEOPLE_RESULTS.map(r => makeRow(r.icon, r.text, r.meta)).join('');
+      smBody.innerHTML = `<div class="sm-results">${rows}</div>`;
+    }
+  }
+
+  function setFilterTab(id) {
+    activeFilterTab = id;
+    renderSmBody();
+  }
+  window.setFilterTab = setFilterTab;
+
+  function determineState(val) {
+    if (!val) return 'default';
+    if (val.startsWith('@')) return 'people';
+    if (val.startsWith('#')) return 'channel';
+    return 'typing';
+  }
+
+  smInput.addEventListener('input', () => {
+    const newState = determineState(smInput.value);
+    if (newState !== smState) {
+      smState = newState;
+      renderSmBody();
+    }
+  });
+
+  smFilterTagX.addEventListener('click', () => {
+    smInput.value = '';
+    smState = 'default';
+    renderSmBody();
+    smInput.focus();
+  });
+
+  function openSearch() {
+    smInput.value = '';
+    smState = 'default';
+    renderSmBody();
+    searchBackdrop.classList.add('visible');
+    setTimeout(() => smInput.focus(), 50);
+  }
+  function closeSearch() { searchBackdrop.classList.remove('visible'); }
+
+  // Search buttons
+  document.querySelectorAll('.sidebar-search, .sidebar-header-btn#sidebarSearchBtn, #sidebarSearchBtn').forEach(el => {
+    el.addEventListener('click', openSearch);
+  });
+
+  // ⌘K shortcut
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+    if (e.key === 'Escape') closeSearch();
+  });
+
+  document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearch);
+  searchBackdrop.addEventListener('click', e => { if (e.target === searchBackdrop) closeSearch(); });
 
   // Agent tabs 클릭
   document.querySelectorAll('.agent-tab').forEach(tab => {
